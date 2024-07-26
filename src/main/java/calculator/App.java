@@ -5,7 +5,6 @@ public class App {
 
     public static void main(String[] args) {
         ArrayList<Integer> intList = new ArrayList<Integer>();
-        int[] intArray = new int[10];
         int cnt = 0;
         Scanner sc = new Scanner(System.in);
         int num1, num2, result = 0;
@@ -45,7 +44,6 @@ public class App {
                     break;
             }
             intList.add(result);
-            //intArray[cnt] = result;
             cnt++;
             System.out.println("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? (remove 입력 시 삭제)");
             more = sc.next();
