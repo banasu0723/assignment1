@@ -1,0 +1,208 @@
+Index: src/main/java/calculator/Calculator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package calculator;\n\npublic class Calculator {\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/calculator/Calculator.java b/src/main/java/calculator/Calculator.java
+--- a/src/main/java/calculator/Calculator.java	(revision 2ca6bb0cd98e26e0b5332b75fb43fb1416f46ccd)
++++ b/src/main/java/calculator/Calculator.java	(date 1722367480510)
+@@ -1,5 +1,52 @@
+ package calculator;
+ 
++import java.util.*;
++
+ public class Calculator {
+ 
++
++
++    ArrayList<Integer> intList = new ArrayList<Integer>();
++
++    /* 연산 결과를 저장하는 컬렉션 타입 필드가 생성자를 통해 초기화 되도록 변경 */
++    /* 생성자 구현 */
++
++    int result = 0;
++
++    public void calculate(int num1, int num2, char operator){
++        switch (operator) {
++            case '+':
++                result = num1 + num2;
++                System.out.println("결과: " + result);
++                break;
++            case '-':
++                result = num1 - num2;
++                System.out.println("결과: " + result);
++                break;
++            case '*':
++                result = num1 * num2;
++                System.out.println("결과: " + result);
++                break;
++            case '/':
++                if (num2 == 0) {
++                    throw new ArithmeticException("0으로 나눌 수 없습니다.");
++                } else {
++                    result = num1 / num2;
++                    System.out.println("결과: " + result);
++                }
++                break;
++        }
++        intList.add(result);
++    }
++
++    public void removeResult(List<Integer> list){
++        intList.remove(0);
++    }
++
++    public void inquiryResults(ArrayList<Integer> intList){
++        for(int answer : this.intList){
++            System.out.println(answer);
++        }
++    }
++
+ }
+Index: src/main/java/calculator/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package calculator;\nimport java.util.*;\n\npublic class App {\n\n    public static void main(String[] args) {\n        int[] intArray = new int[10];\n        int cnt = 0;\n        Scanner sc = new Scanner(System.in);\n        int num1, num2, result = 0;\n        char calculate ;\n        String more;\n\n\n        while(true) {\n            System.out.print(\"첫 번째 숫자를 입력하세요: \");\n            num1 = sc.nextInt();\n            System.out.print(\"두 번째 숫자를 입력하세요: \");\n            num2 = sc.nextInt();\n            System.out.print(\"사칙연산 기호를 입력하세요: \");\n            result = 0;\n            calculate = sc.next().charAt(0);\n\n            switch (calculate) {\n                case '+':\n                    result = num1 + num2;\n                    System.out.println(\"결과: \" + result);\n                    break;\n                case '-':\n                    result = num1 - num2;\n                    System.out.println(\"결과: \" + result);\n                    break;\n                case '*':\n                    result = num1 * num2;\n                    System.out.println(\"결과: \" + result);\n                    break;\n                case '/':\n                    if (num2 == 0) {\n                        System.out.println(\"나눗셈 연산에서 분모(두번째 정수)에 0이 입력될 수 없습니다.\");\n                    } else {\n                        result = num1 / num2;\n                        System.out.println(\"결과: \" + result);\n                    }\n                    break;\n            }\n            intArray[cnt] = result;\n            cnt++;\n            System.out.println(\"더 계산하시겠습니까? (exit 입력 시 종료)\");\n            more = sc.next();\n            if(more.equals(\"exit\")){\n                break;\n            }else {\n                if (cnt == 10) {\n                    for (int i = 0; i < 9; i++) {\n                        intArray[i] = intArray[i + 1];\n                    }\n                    cnt = 9;\n                }\n            }\n        }\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/calculator/App.java b/src/main/java/calculator/App.java
+--- a/src/main/java/calculator/App.java	(revision 2ca6bb0cd98e26e0b5332b75fb43fb1416f46ccd)
++++ b/src/main/java/calculator/App.java	(date 1722364473894)
+@@ -4,60 +4,41 @@
+ public class App {
+ 
+     public static void main(String[] args) {
+-        int[] intArray = new int[10];
+-        int cnt = 0;
++        Calculator calCulate = new Calculator(); // Calculator 인스턴스 생성
+         Scanner sc = new Scanner(System.in);
+-        int num1, num2, result = 0;
+-        char calculate ;
+         String more;
+ 
+ 
+         while(true) {
+             System.out.print("첫 번째 숫자를 입력하세요: ");
+-            num1 = sc.nextInt();
++            int num1 = sc.nextInt();
+             System.out.print("두 번째 숫자를 입력하세요: ");
+-            num2 = sc.nextInt();
++            int num2 = sc.nextInt();
++
+             System.out.print("사칙연산 기호를 입력하세요: ");
+-            result = 0;
+-            calculate = sc.next().charAt(0);
++            char operator = sc.next().charAt(0);
++            calCulate.calculate(num1,num2,operator);
+ 
+-            switch (calculate) {
+-                case '+':
+-                    result = num1 + num2;
+-                    System.out.println("결과: " + result);
+-                    break;
+-                case '-':
+-                    result = num1 - num2;
+-                    System.out.println("결과: " + result);
+-                    break;
+-                case '*':
+-                    result = num1 * num2;
+-                    System.out.println("결과: " + result);
+-                    break;
+-                case '/':
+-                    if (num2 == 0) {
+-                        System.out.println("나눗셈 연산에서 분모(두번째 정수)에 0이 입력될 수 없습니다.");
+-                    } else {
+-                        result = num1 / num2;
+-                        System.out.println("결과: " + result);
+-                    }
+-                    break;
++            System.out.println("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? (remove 입력 시 삭제)");
++            more = sc.next();
++            if(more.equals("remove")){
++                calCulate.removeResult(calCulate.intList);
++            }
++
++            System.out.println("저장된 연산결과를 조회하시겠습니까? (inquiry 입력 시 조회)");
++            more = sc.next();
++            if(more.equals("inquiry")){
++                calCulate.inquiryResults(calCulate.intList);
+             }
+-            intArray[cnt] = result;
+-            cnt++;
++
+             System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");
+             more = sc.next();
+             if(more.equals("exit")){
+                 break;
+-            }else {
+-                if (cnt == 10) {
+-                    for (int i = 0; i < 9; i++) {
+-                        intArray[i] = intArray[i + 1];
+-                    }
+-                    cnt = 9;
+-                }
+-            }
+-        }
++            }
++        }
++
++    }
++
+ 
+-    }
+-}
++}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"cbccc591-8f54-46e0-b8bf-1c0192b1eef2\" name=\"Changes\" comment=\"init commit\">\n      <change beforePath=\"$PROJECT_DIR$/.gradle/file-system.probe\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/file-system.probe\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/calculator/App.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/calculator/App.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <projects_view>\n          <tree_state>\n            <expand>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"nbcamp-java-personal-task\" type=\"f1a62948:ProjectNode\" />\n              </path>\n            </expand>\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"SET_USER_NAME_GLOBALLY\" value=\"false\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 8\n}</component>\n  <component name=\"ProjectId\" id=\"2f5QbZFKzhrg1ANsGvSw7zNTjsP\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,\n    &quot;Gradle.nbcamp-java-personal-task 3 [:App.main()].executor&quot;: &quot;Run&quot;,\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/Users/seungun/Downloads/nbcamp-java-personal-task 3&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,\n    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,\n    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,\n    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunManager\">\n    <configuration name=\"App\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"calculator.App\" />\n      <module name=\"nbcamp-java-personal-task.main\" />\n      <extension name=\"coverage\">\n        <pattern>\n          <option name=\"PATTERN\" value=\"calculator.*\" />\n          <option name=\"ENABLED\" value=\"true\" />\n        </pattern>\n      </extension>\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Application.App\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"jdk-17.0.10-corretto-17.0.10-3183f394aec4-96c0d24d\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"cbccc591-8f54-46e0-b8bf-1c0192b1eef2\" name=\"Changes\" comment=\"\" />\n      <created>1713088530682</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1713088530682</updated>\n      <workItem from=\"1713088532647\" duration=\"253000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"init commit\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1713088729134</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1713088729134</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"2\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State>\n              <option name=\"FILTERS\">\n                <map>\n                  <entry key=\"branch\">\n                    <value>\n                      <list>\n                        <option value=\"master\" />\n                      </list>\n                    </value>\n                  </entry>\n                </map>\n              </option>\n            </State>\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"init commit\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"init commit\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2ca6bb0cd98e26e0b5332b75fb43fb1416f46ccd)
++++ b/.idea/workspace.xml	(date 1722358592054)
+@@ -4,10 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="cbccc591-8f54-46e0-b8bf-1c0192b1eef2" name="Changes" comment="init commit">
+-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
++    <list default="true" id="cbccc591-8f54-46e0-b8bf-1c0192b1eef2" name="Changes" comment="level1_6번까지 완료">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/calculator/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/calculator/App.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/calculator/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/calculator/Calculator.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -51,6 +51,9 @@
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+     <option name="SET_USER_NAME_GLOBALLY" value="false" />
++  </component>
++  <component name="MarkdownSettingsMigration">
++    <option name="stateVersion" value="1" />
+   </component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 8
+@@ -125,7 +128,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1713088729134</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="init commit">
++      <option name="closed" value="true" />
++      <created>1721918840300</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1721918840300</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
